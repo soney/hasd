@@ -72,7 +72,7 @@ public class HASDSidebarPainter extends JComponent {
 
                         if (line >= textArea.getLineCount())
                                 return;
-
+/*
                         String lineText = textArea.getLineText(line);
                         HASDLineModel m =
                         (HASDLineModel)textArea.getTokenMarker().getLineModelAt(line);
@@ -86,7 +86,16 @@ public class HASDSidebarPainter extends JComponent {
                         } else if (lineText != null && lineText.trim().length() != 0){
                                 m.isPrintPoint = true;
                         }
+                        */
                         HASDSidebarPainter.this.repaint();
+                }
+                public void mouseEntered(MouseEvent e) {
+                	System.out.println("Mouse over");
+                    HASDSidebarPainter.this.repaint();
+                }
+                public void mouseExited(MouseEvent e) {
+                	System.out.println("Mouse over");
+                    HASDSidebarPainter.this.repaint();
                 }
         }
 }

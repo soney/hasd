@@ -8,10 +8,10 @@ import processing.app.Editor;
 import processing.app.EditorToolbar;
 
 public class HASDToolbar extends EditorToolbar{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	private HASDHandler rh;
+
 	private Editor editor;
 	  /** Rollover titles for each button. */
 	static final String newTitle[] = {
@@ -58,7 +58,8 @@ public class HASDToolbar extends EditorToolbar{
 	    switch (sel) {
 	    case RUN:
 	    	//Present (full screen) should be run if shift is down
-	    	editor.handleRun(e.isShiftDown());
+	    	//editor.handleRun(e.isShiftDown());
+	    	rh.handleInteractiveRun();
 	      break;
 
 	    case STOP:

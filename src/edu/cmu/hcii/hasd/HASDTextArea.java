@@ -28,8 +28,8 @@ public class HASDTextArea extends JEditTextArea{
 	    editPanel.add(bPainter, BorderLayout.LINE_START);
 	    /**/
 	}
-	/*
-	public RehearseSidebarPainter getBPainter() {
+	
+	public HASDSidebarPainter getBPainter() {
         return bPainter;
 	}
 	
@@ -113,5 +113,4 @@ public class HASDTextArea extends JEditTextArea{
 
 	    return changed;
 	}
-	*/
 }

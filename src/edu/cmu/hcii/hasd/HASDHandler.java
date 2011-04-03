@@ -111,9 +111,10 @@ public class HASDHandler implements ConsoleInterface {
         }
 
         public void handleInteractiveRun() {
+        	System.out.println("Interactive run!!!");
          // HelpMeOutLog.getInstance().write(HelpMeOutLog.STARTED_INTERACTIVE_RUN);
         	 if (USEHIGHLIGHT)
-                 editor.getTextArea().getPainter().addCustomHighlight(new RehearseHighlight());
+                 editor.getTextArea().getPainter().addCustomHighlight(new HASDHighlight());
 
         	editor.statusEmpty(); //clear the status area
 

@@ -39,7 +39,6 @@ public class HASD implements Tool {
  
 	public void init(Editor theEditor) {
 		this.editor = theEditor;
-		System.out.println("INIT");
 		editor.setCustomToolbar(new HASDToolbar(editor, editor.getToolbarMenu()), this);
 		editor.setCustomTextArea(new HASDTextArea(new PdeTextAreaDefaults()), this);
 	}
