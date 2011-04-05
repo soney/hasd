@@ -31,7 +31,12 @@ import javax.swing.*;
 
 import processing.app.debug.Compiler;
 import processing.core.*;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * The base class for the main processing application.
@@ -98,7 +103,9 @@ public class Base {
 //  ArrayList editors = Collections.synchronizedList(new ArrayList<Editor>());
   Editor activeEditor;
 
-
+public static PrintWriter server_out;
+	public static BufferedReader server_in;
+	
   static public void main(String args[]) {
     try {
       File versionFile = getContentFile("lib/version.txt");
@@ -107,9 +114,26 @@ public class Base {
       }
     } catch (Exception e) {
       e.printStackTrace();
-    }
+    } 
 
-//    if (System.getProperty("mrj.version") != null) {
+	Socket kkSocket = null;
+	PrintWriter out = null;
+	BufferedReader in = null;
+
+	try {
+		kkSocket = new Socket("localhost", 4444);
+		out = new PrintWriter(kkSocket.getOutputStream(), true);
+		in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
+	} catch (UnknownHostException e) {
+		System.err.println("Server is not running");
+		System.exit(1);
+	} catch (IOException e) {
+		System.err.println("Couldn't get I/O for the connection to: taranis.");
+		System.exit(1);
+	}
+	Base.server_out = out;
+	Base.server_in = in;
+
 //      //String jv = System.getProperty("java.version");
 //      String ov = System.getProperty("os.version");
 //      if (ov.startsWith("10.5")) {

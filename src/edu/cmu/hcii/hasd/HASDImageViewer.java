@@ -112,8 +112,8 @@ public class HASDImageViewer extends JFrame implements ChangeListener, ActionLis
         }
 
         public static class SnapshotImageViewer extends JPanel {
-
-                private Image image;
+			private static final long serialVersionUID = 1L;
+				private Image image;
 
                 public SnapshotImageViewer(Image image) {
                         this.image = image;
@@ -136,8 +136,8 @@ public class HASDImageViewer extends JFrame implements ChangeListener, ActionLis
         }
 
         public static class VariableTableModel extends AbstractTableModel {
-
-                private static String[] columnNames = {"Name", "Values"};
+			private static final long serialVersionUID = 1L;
+				private static String[] columnNames = {"Name", "Values"};
                 private SnapshotModel snapshot;
                 private List<String> variableNames;
                 private List<String> variableValues;

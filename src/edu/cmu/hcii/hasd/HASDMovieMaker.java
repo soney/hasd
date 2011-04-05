@@ -92,8 +92,7 @@ import quicktime.util.RawEncodedImage;
  * }
  * </PRE>
  */
-@SuppressWarnings("deprecation")
-public class MovieMaker {
+public class HASDMovieMaker {
   public static final int RAW = StdQTConstants.kRawCodecType;
   public static final int ANIMATION = StdQTConstants.kAnimationCodecType;
   public static final int BASE = StdQTConstants.kBaseCodecType;
@@ -151,45 +150,18 @@ public class MovieMaker {
 
   private PApplet parent;
 
-
-  /**
-   * Create a movie with the specified width, height, and filename.
-   * The movie will be created at 15 frames per second.
-   * The codec will be set to RAW and quality set to HIGH.
-   */
-  public MovieMaker(PApplet p, int _w, int _h, String _filename) {
-    this(p, _w, _h, _filename, 30, RAW, HIGH, 15);
-  }
-
-
-  /**
-   * Create a movie with the specified width, height, filename, and frame rate.
-   * The codec will be set to RAW and quality set to HIGH.
-   */
-  public MovieMaker(PApplet p, int _w, int _h, String _filename, int _rate) {
-    this(p, _w, _h, _filename, _rate, RAW, HIGH, 15);
-  }
-
-
-  /**
-   * Create a movie with the specified width, height, filename, frame rate,
-   * and codec type and quality. Key frames will be set at 15 frames.
-   */
-  public MovieMaker(PApplet p, int _w, int _h, String _filename, int _rate,
-                    int _codecType, int _codecQuality) {
-    this(p, _w, _h, _filename, _rate, _codecType, _codecQuality, 15);
-  }
-
+  private final HASDHandler handler;
 
   /**
    * Create a movie with the specified width, height, filename, frame rate,
    * codec type and quality, and key frame rate.
    */
-  public MovieMaker(PApplet p, int _w, int _h, String _filename, int _rate,
-                    int _codecType, int _codecQuality,
-                    int _keyFrameRate) {
+  public HASDMovieMaker(PApplet p, int _w, int _h, String _filename, int _rate,
+                    int _codecType, int _codecQuality, HASDHandler handler) {
     parent = p;
 
+    this.handler = handler;
+    
     width = _w;
     height = _h;
     rate = _rate;
@@ -216,7 +188,7 @@ public class MovieMaker {
     }
     codecType = _codecType;
     codecQuality = _codecQuality;
-    keyFrameRate = _keyFrameRate;
+    keyFrameRate = 15;
     initMovie(_filename);
 
     parent.registerDispose(this);
@@ -315,7 +287,7 @@ public class MovieMaker {
   /**
    * Close out and finish the movie file.
    */
-  public void finish() {
+  public void finish(Runnable onDone) {
     try {
       if (readyForFrames) {
         //System.out.println("Finishing movie file.");
@@ -325,12 +297,22 @@ public class MovieMaker {
         OpenMovieFile omf = OpenMovieFile.asWrite(movFile);
         movie.addResource(omf, StdQTConstants.movieInDataForkResID,
                           movFile.getName());
+        onDone.run();
       }
     } catch (StdQTException se) {
       se.printStackTrace();
     } catch (QTException qe) {
       qe.printStackTrace();
     }
+  }
+  
+  public void finish() {
+	  final HASDHandler handler = this.handler;
+	  finish(new Runnable(){
+	    	public void run() {
+	    		handler.commit_version(handler.applet.savePath("./.hasd/"));
+	    	}
+	    });
   }
 
 

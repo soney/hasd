@@ -1,7 +1,6 @@
 package edu.cmu.hcii.hasd;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.lang.reflect.Method;
 
 import javax.swing.JFrame;
@@ -10,7 +9,7 @@ import processing.core.PApplet;
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.UtilEvalError;
-//import edu.stanford.hci.helpmeout.HelpMeOutExceptionTracker;
+
 
 /**
  * Overrides PApplet & lets the methods called on it (e.g. setup, draw)
@@ -24,12 +23,19 @@ public enum MethodType { draw, setup, mouseClicked,
     keyPressed, keyReleased, keyTyped
   }
 
+	
   Interpreter i;
+  private HASDMovieMaker mm; 
 
   public boolean resolveException = true;
 
   public void setInterpreter(Interpreter i) {
     this.i = i;
+  }
+  public HASDHandler handler;
+  public HASDPApplet(HASDHandler handler) {
+	  super();
+	  this.handler = handler;
   }
 
   @Override
@@ -43,11 +49,14 @@ public enum MethodType { draw, setup, mouseClicked,
   @Override
   public void draw() {
     invoke(MethodType.draw);
+    mm.addFrame();
   }
 
   @Override
   public void setup() {
     invoke(MethodType.setup);
+    mm = new HASDMovieMaker(this, this.width, this.height, "./.hasd/latest_version.mov", 30, HASDMovieMaker.H263, HASDMovieMaker.HIGH, this.handler);
+	  
   }
 
   @Override
@@ -90,9 +99,6 @@ public enum MethodType { draw, setup, mouseClicked,
     invoke(MethodType.keyTyped);
   }
 
-  public Image snapshot() {
-    return g.getImage();
-  }
 
   // Some methods are not supposed to be called directly.
   // This method is mainly used by the Interpreter to skip
@@ -134,7 +140,7 @@ public enum MethodType { draw, setup, mouseClicked,
   public void stop() {
     //System.err.println("RehearsePApplet.stop()");
     // check if waitForNextLine is true
-
+	    
     if (i.getWatchForNextLine() && resolveException) {
       System.out.println("\tRehearsePApplet.stop() inner");
       // if so, resolve since we executed the error-causing line and finished without a problem
@@ -144,8 +150,16 @@ public enum MethodType { draw, setup, mouseClicked,
 
     }
     super.stop();
+    
   }
 
+
+
+  
+  public void writeMovie(Runnable onDone) {
+	  mm.finish(onDone);
+  }
+  
   @Override
   protected void registerNoArgs(RegisteredMethods meth,
       String name, Object o) {

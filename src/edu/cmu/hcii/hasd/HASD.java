@@ -25,25 +25,47 @@
 
 package edu.cmu.hcii.hasd;
 
-import processing.app.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import processing.app.Editor;
 import processing.app.syntax.PdeTextAreaDefaults;
-import processing.app.tools.*;
+import processing.app.tools.Tool;
 
 
 public class HASD implements Tool {
 	private Editor editor;
+	
  
 	public String getMenuTitle() {
 		return "HASD";
 	}
  
 	public void init(Editor theEditor) {
-		this.editor = theEditor;
-		editor.setCustomToolbar(new HASDToolbar(editor, editor.getToolbarMenu()), this);
-		editor.setCustomTextArea(new HASDTextArea(new PdeTextAreaDefaults()), this);
+		
+/*
+	
+		try{
+			
+			out.close();
+			in.close();
+			kkSocket.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	*/	
+this.editor = theEditor;
+		editor.setCustomToolbar(new HASDToolbar(this, editor, editor.getToolbarMenu()), this);
+		editor.setCustomTextArea(new HASDTextArea(this, new PdeTextAreaDefaults(), editor), this);
 	}
  
 	public void run() {
+		 
 	}
 	
 }

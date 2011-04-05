@@ -17,7 +17,6 @@ public class HASDToolbar extends EditorToolbar{
 	static final String newTitle[] = {
 		"Run", "Stop", "New", "Open", "Save", "Export", "Interactive Run"
 	  };
-	  
 	  /** Titles for each button when the shift key is pressed. */ 
 	static final String newTitleShift[] = {
 		"Present", "Stop", "New Editor Window", "Open in Another Window", "Save", 
@@ -25,9 +24,12 @@ public class HASDToolbar extends EditorToolbar{
 	    };
 	
 	protected static final int INTERACTIVE_RUN = 6;
+	private HASD hasd;
 	
-	
-	public HASDToolbar(Editor editor, JMenu menu) {
+	public HASDToolbar(HASD hasd, Editor editor, JMenu menu) {
+		this.hasd = hasd;
+		rh = new HASDHandler(editor);
+
 		title = newTitle;
 		titleShift = newTitleShift;
 		this.editor = editor;
@@ -59,7 +61,7 @@ public class HASDToolbar extends EditorToolbar{
 	    case RUN:
 	    	//Present (full screen) should be run if shift is down
 	    	//editor.handleRun(e.isShiftDown());
-	    	rh.handleInteractiveRun();
+	    	rh.handleHASDRun(e.isShiftDown());
 	      break;
 
 	    case STOP:

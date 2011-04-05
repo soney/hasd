@@ -5,16 +5,19 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
+import processing.app.Editor;
 import processing.app.syntax.JEditTextArea;
 import processing.app.syntax.TextAreaDefaults;
 
 public class HASDTextArea extends JEditTextArea{
 	private static final long serialVersionUID = 1L;
 	private HASDSidebarPainter bPainter;
+	public Editor editor;
+	private HASD hasd;
 	
-	public HASDTextArea(TextAreaDefaults defaults) {
+	public HASDTextArea(HASD hasd, TextAreaDefaults defaults, Editor editor) {
 		super(defaults);
-		
+		this.hasd = hasd;
 	    // New painting component with breakpoints:
 	    JPanel editPanel = new JPanel(new BorderLayout());
 	    editPanel.add(painter, BorderLayout.CENTER);
@@ -26,6 +29,7 @@ public class HASDTextArea extends JEditTextArea{
 	    bPainter = new HASDSidebarPainter(this, painter);
 	    bPainter.setPreferredSize(new Dimension(40,400));
 	    editPanel.add(bPainter, BorderLayout.LINE_START);
+	    this.editor = editor;
 	    /**/
 	}
 	
